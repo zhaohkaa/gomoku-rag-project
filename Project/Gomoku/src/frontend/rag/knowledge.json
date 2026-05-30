@@ -1,0 +1,68 @@
+[
+  {
+    "id": "k1",
+    "topic": "defense",
+    "keywords": ["block", "defense", "open four", "threat"],
+    "text": "If the opponent has an open four, blocking is usually mandatory."
+  },
+  {
+    "id": "k2",
+    "topic": "center",
+    "keywords": ["center", "opening", "influence"],
+    "text": "Control near the center usually gives more extension options in Gomoku."
+  },
+  {
+    "id": "k3",
+    "topic": "attack",
+    "keywords": ["three", "double threat", "fork"],
+    "text": "Building connected threats can force the opponent into passive defense."
+  },
+  {
+    "id": "k4",
+    "topic": "review",
+    "keywords": ["review", "mistake", "missed defense"],
+    "text": "A common mistake is expanding attack while ignoring an immediate defensive response."
+  },
+  {
+    "id": "k5",
+    "topic": "endgame",
+    "keywords": ["win", "winning", "forced"],
+    "text": "When a forced winning line appears, prioritizing it is often stronger than positional expansion."
+  },
+  {
+    "id": "p1",
+    "topic": "personality",
+    "keywords": ["defensive", "careful", "stable", "conservative"],
+    "text": "Players who prioritize blocking and reducing risk often show a stable and defense-oriented playstyle."
+  },
+  {
+    "id": "p2",
+    "topic": "personality",
+    "keywords": ["aggressive", "attack", "pressure", "initiative"],
+    "text": "Players who consistently create threats and push initiative often have an aggressive attacking personality."
+  },
+  {
+    "id": "p3",
+    "topic": "personality",
+    "keywords": ["balanced", "rational", "flexible", "adapt"],
+    "text": "Players who shift between offense and defense according to the board tend to show a balanced and rational style."
+  },
+  {
+    "id": "p4",
+    "topic": "personality",
+    "keywords": ["risky", "impulsive", "overextend", "gamble"],
+    "text": "Ignoring direct threats for speculative attacks may indicate an impulsive or risk-seeking playstyle."
+  },
+  {
+    "id": "p5",
+    "topic": "personality",
+    "keywords": ["opportunistic", "mistake", "counterattack", "timing"],
+    "text": "Players who rely on punishing mistakes and seizing sudden chances often show an opportunistic personality."
+  },
+  {
+    "id": "p6",
+    "topic": "personality",
+    "keywords": ["growth", "learning", "improve", "adaptation"],
+    "text": "A player whose later moves become more stable after early mistakes may show a growth-oriented personality."
+  }
+]

@@ -1,53 +1,161 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gomoku - Human vs AI</title>
     <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-    <div class="container">
-        <header>
-            <h1>Gomoku - Human vs AI</h1>
-            <p class="subtitle">五子棋 - 你执黑棋先行</p>
-        </header>
+    <div class="page-shell">
+        <div class="container">
+            <header class="hero-header">
+                <h1>Gomoku - Human vs AI</h1>
+                <p class="subtitle">五子棋 - 你执黑棋先行</p>
 
-        <div class="game-info">
-            <div class="status-panel">
-                <div id="status" class="status waiting">等待开始...</div>
-                <div id="reasoning" class="reasoning hidden"></div>
-            </div>
-            <div class="score-panel">
-                <div class="player-score">
-                    <span class="piece black"></span>
-                    <span>你 (黑)</span>
+                <div class="status-container">
+                    <div id="status" class="status your-turn">你的回合</div>
                 </div>
-                <div class="vs">VS</div>
-                <div class="player-score">
-                    <span class="piece white"></span>
-                    <span>AI (白)</span>
+
+                <div class="score-panel">
+                    <span class="player-score"><span class="piece black"></span> 你 (黑)</span>
+                    <span class="vs">VS</span>
+                    <span class="player-score"><span class="piece white"></span> AI (白)</span>
                 </div>
+            </header>
+
+            <div class="top-layout">
+                <section class="board-section glass-card">
+                    <div class="board-wrap">
+                        <canvas id="gameCanvas" width="600" height="600"></canvas>
+                    </div>
+
+                    <div class="board-controls">
+                        <button id="newGameBtn" class="btn btn-primary">新游戏</button>
+                        <!-- <button id="undoBtn" class="btn btn-secondary">悔棋</button> -->
+                    </div>
+
+                    <div class="reasoning-box">
+                        <div class="reasoning-title">AI 思考</div>
+                        <div id="reasoning" class="reasoning-text">等待 AI 落子...</div>
+                    </div>
+                </section>
+
+                <aside class="panel qa-panel glass-card">
+                    <div class="panel-header qa-header">
+                        <h3>Gomoku QA（棋局问答）</h3>
+                    </div>
+                    <div class="panel-body panel-body-fill">
+                        <p class="panel-lead">
+                            输入问题后点击 Ask。可问规则、局面分析、Top3 候选点，也可以直接问“为什么 AI 这样下？”。
+                        </p>
+
+                        <div class="input-group">
+                            <input type="text" id="qaInput" placeholder="例如：什么是活三？ / Top3 候选点 / 为什么 AI 这样下？">
+                            <button id="qaBtn" class="btn btn-rag">Ask</button>
+                        </div>
+
+                        <div id="answerPanel" class="result-box qa-result placeholder qa-answer-box">
+                            <p class="placeholder-text">你可以问：</p>
+                            <ul>
+                                <li>什么是活三、冲四、双三？</li>
+                                <li>帮我分析下一步怎么走</li>
+                                <li>当前局面谁更占优？</li>
+                                <li>为什么 AI 这样下？</li>
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <div class="bottom-stack">
+                <section class="panel review-panel glass-card">
+                    <div class="panel-header review-header">
+                        <h3>Post-game Review（棋局复盘）</h3>
+                    </div>
+                    <div class="panel-body review-body">
+                        <div class="review-actions">
+                            <button id="reviewBtn" class="btn btn-primary" disabled>生成棋局复盘</button>
+                            <button id="downloadBtn" class="btn btn-secondary" disabled style="display: none;">
+                                下载复盘报告
+                            </button>
+                        </div>
+
+                        <div id="reviewHint" class="review-hint">
+                            对局结束后可在这里生成复盘、查看胜率走势，并下载报告。
+                        </div>
+
+                        <div id="reviewLoading" class="review-loading" style="display: none;">
+                            <div class="loading-spinner"></div>
+                            <div class="loading-text">
+                                <strong>正在生成复盘...</strong>
+                                <span>正在分析关键步、失误点与胜率走势，请稍候</span>
+                            </div>
+                        </div>
+
+                        <div id="winRateContainer" class="winrate-card" style="display: none;">
+                            <div class="winrate-title">胜率分析</div>
+                            <canvas id="winRateChart"></canvas>
+                        </div>
+
+                        <div id="reviewPanel" class="result-box review-result-box">
+                            <p class="placeholder-text">复盘结果将显示在这里...</p>
+                            <ul>
+                                <li>本局总结</li>
+                                <li>关键转折点</li>
+                                <li>失误分析</li>
+                                <li>改进建议</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panel personality-section glass-card">
+                    <div class="panel-header personality-header">
+                        <h3>Personality Test（棋风人格）</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="review-actions">
+                            <button id="personalityBtn" class="btn btn-personality" disabled style="display: none;">
+                                棋风人格测试
+                            </button>
+                        </div>
+
+                        <div class="review-hint personality-hint">
+                            先生成棋局复盘，再在这里生成你的棋风人格画像。
+                        </div>
+
+                        <div id="personalityLoading" class="review-loading" style="display: none;">
+                            <div class="loading-spinner"></div>
+                            <div class="loading-text">
+                                <strong>正在生成人格测试...</strong>
+                                <span>正在根据复盘结果分析你的棋风画像，请稍候</span>
+                            </div>
+                        </div>
+
+                        <div id="personalityPanel" class="result-box personality-box" style="display: none;">
+                            <p class="placeholder-text">人格测试结果将显示在这里...</p>
+                            <ul>
+                                <li>人格类型</li>
+                                <li>风格称号</li>
+                                <li>优势与风险</li>
+                                <li>趣味点评</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
 
-        <div class="board-container">
-            <canvas id="board" width="480" height="480"></canvas>
-        </div>
-
-        <div class="controls">
-            <button id="newGameBtn" class="btn btn-primary">新游戏</button>
-            <button id="undoBtn" class="btn btn-secondary" disabled>悔棋</button>
-        </div>
-
-        <div class="message-box hidden" id="messageBox">
-            <div class="message-content">
-                <span id="messageText"></span>
-            </div>
-            <button id="closeMessage" class="close-btn">&times;</button>
+        <div class="footer-note">
+            Gomoku Review UI · Unified Ask QA · Top3 Board Highlight · Win Rate Analysis
         </div>
     </div>
 
     <script src="/static/game.js"></script>
 </body>
+
 </html>
